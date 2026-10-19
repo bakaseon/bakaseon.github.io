@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site';
+---
+
+<BaseLayout title="개인정보처리방침 (Privacy Policy)">
+  <article class="card prose">
+    <h1>개인정보처리방침 (Privacy Policy)</h1>
+    <p>
+      <strong>{SITE_CONFIG.title}</strong>(이하 '본 사이트')는 이용자의 개인정보를 소중히 다루며 관련 법령 및 구글 애드센스(Google AdSense) 게시자 정책을 준수합니다.
+    </p>
+    <h2>1. 개인정보 수집 및 계산 데이터 처리</h2>
+    <p>
+      본 사이트에서 제공하는 모든 웹 계산기(연봉, 관부가세, 배당금, AI 비용 등)에 입력하시는 수치는 이용자의 브라우저 내에서만 즉시 연산되며, <strong>별도의 서버로 전송되거나 저장되지 않습니다.</strong>
+    </p>
+    <h2>2. 쿠키(Cookie) 및 맞춤형 광고 안내 (Google AdSense)</h2>
+    <ul>
+      <li>Google을 포함한 제3자 광고 사업자는 쿠키를 사용하여 사용자의 본 사이트 또는 다른 웹사이트 방문 기록을 기반으로 맞춤형 광고를 게재할 수 있습니다.</li>
+      <li>Google의 광고 쿠키 사용으로 인해 Google 및 파트너는 사용자의 사이트 방문 기록을 바탕으로 적절한 광고를 제공할 수 있습니다.</li>
+      <li>사용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google 광고 설정</a> 페이지에서 개인 맞춤형 광고를 언제든지 해제할 수 있습니다.</li>
+    </ul>
+    <h2>3. 문의처</h2>
+    <p>개인정보 보호 및 사이트 이용 관련 문의: <strong>{SITE_CONFIG.contactEmail}</strong></p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,19 @@
+{
+  "name": "auto-income-factory",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "High-CPC Micro Web Tools + Automated SEO Blog + Affiliate Monetization Engine",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "post:demo": "python bot/auto_poster.py --demo",
+    "post:ai": "python bot/auto_poster.py"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.9",
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^4.16.18"
+  }
+}

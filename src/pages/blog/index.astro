@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="실전 금융·직구·AI 가이드 아카이브"
+  description="연봉 실수령액 절세 전략, 해외직구 관부가세 면세 팁, 배당주 ETF 재테크 및 AI 생산성 도구 활용 가이드를 확인하세요."
+>
+  <div class="card">
+    <h1 style="font-size: 1.65rem; margin-bottom: 0.4rem;">📚 실전 가이드 & 심층 분석 블로그</h1>
+    <p style="color: var(--text-muted);">
+      자동화 리서치 엔진과 에디터 검수를 거쳐 업데이트되는 최신 금융·세금·AI 실전 정보입니다.
+    </p>
+  </div>
+
+  <AdSlot position="top" />
+
+  <div class="grid-2">
+    {posts.map((post) => (
+      <article class="card" style="margin-bottom: 0;">
+        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-bottom: 0.4rem;">
+          {post.data.category.toUpperCase()} · {post.data.pubDate.toISOString().slice(0, 10)}
+        </div>
+        <h2 style="font-size: 1.22rem; margin-bottom: 0.5rem;">
+          <a href={`/blog/${post.slug}/`} style="color: var(--text);">{post.data.title}</a>
+        </h2>
+        <p style="font-size: 0.93rem; color: var(--text-muted); margin-bottom: 1rem;">
+          {post.data.description}
+        </p>
+        <a href={`/blog/${post.slug}/`} style="font-weight: 700; font-size: 0.9rem;">전체 가이드 읽기 →</a>
+      </article>
+    ))}
+  </div>
+
+  <AdSlot position="bottom" />
+</BaseLayout>

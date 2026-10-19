@@ -1,0 +1,72 @@
+---
+import { SITE_CONFIG } from '../config/site';
+
+interface Props {
+  position?: 'top' | 'middle' | 'bottom';
+  slotId?: string;
+}
+
+const { position = 'top', slotId = '' } = Astro.props;
+const { googleAdSenseId, kakaoAdFitUnitTop, kakaoAdFitUnitBottom, showPlaceholderWhenEmpty } = SITE_CONFIG.ads;
+const kakaoUnit = position === 'bottom' ? kakaoAdFitUnitBottom : kakaoAdFitUnitTop;
+---
+
+<div class="ad-slot-wrapper" aria-label="Sponsored Advertisement">
+  {googleAdSenseId ? (
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={googleAdSenseId}
+      data-ad-slot={slotId || 'auto'}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  ) : kakaoUnit ? (
+    <ins
+      class="kakao_ad_area"
+      style="display:none;"
+      data-ad-unit={kakaoUnit}
+      data-ad-width="728"
+      data-ad-height="90"
+    ></ins>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  ) : showPlaceholderWhenEmpty ? (
+    <div class="ad-placeholder">
+      <span class="ad-badge">AD · 수익화 슬롯 ({position.toUpperCase()})</span>
+      <p>구글 애드센스 또는 카카오 애드핏 승인 코드 입력 시 이 영역에 고단가 맞춤 광고가 자동 송출됩니다.</p>
+    </div>
+  ) : null}
+</div>
+
+<style>
+  .ad-slot-wrapper {
+    margin: 1.25rem 0;
+    text-align: center;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ad-placeholder {
+    width: 100%;
+    background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 1rem;
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+  .ad-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.35rem;
+  }
+</style>

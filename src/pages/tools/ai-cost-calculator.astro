@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AffiliateCard from '../../components/AffiliateCard.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI 구독료 vs API 사용량 가성비 비교 계산기",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "All",
+  "description": "ChatGPT Plus, Claude Pro 월 $20 정액 구독과 OpenAI/Anthropic/Gemini API 종량제 비용을 비교합니다."
+};
+---
+
+<BaseLayout
+  title="AI 구독료 vs API 비용 비교 계산기 (ChatGPT·Claude·Gemini 가성비 진단)"
+  description="매달 20달러씩 나가는 ChatGPT Plus, Claude Pro 구독료가 아깝다면? 내 하루 질문 횟수를 입력해 정액 구독과 API 종량제 중 어느 쪽이 이득인지 비교해 보세요."
+  jsonLd={jsonLd}
+>
+  <AdSlot position="top" />
+
+  <div class="card">
+    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">🤖 AI 월 구독료 vs API 종량제 가성비 계산기</h1>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+      하루 평균 AI 질문 횟수와 답변 길이를 입력하면 월 $20 정액제 구독과 API 호출 방식 중 어느 쪽이 얼마나 절약되는지 즉시 계산합니다.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <div class="form-group">
+          <label for="dailyPrompts">1. 하루 평균 질문(프롬프트) 횟수</label>
+          <input type="number" id="dailyPrompts" class="form-control" value="25" min="1" max="500" step="5" />
+        </div>
+
+        <div class="form-group">
+          <label for="modelTier">2. 주로 사용하는 AI 모델 등급</label>
+          <select id="modelTier" class="form-control">
+            <option value="flash">경량·고속 모델 (Gemini Flash / GPT-4o mini)</option>
+            <option value="standard" selected>표준 플래그십 (GPT-4o / Claude 3.5 Sonnet / Gemini Pro)</option>
+            <option value="heavy">초고성능 추론 모델 (OpenAI o1 / Claude Opus)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subCount">3. 현재 유료 구독 중인 AI 서비스 개수 ($20/월 기준)</label>
+          <select id="subCount" class="form-control">
+            <option value="1">1개 구독 중 ($20/월)</option>
+            <option value="2">2개 구독 중 ($40/월 - 예: ChatGPT + Claude)</option>
+            <option value="3">3개 이상 구독 중 ($60/월)</option>
+          </select>
+        </div>
+
+        <button id="calcAiBtn" class="btn-primary" type="button">AI 비용 절감액 계산하기</button>
+      </div>
+
+      <div>
+        <div class="result-box">
+          <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);" id="aiRecBadge">분석 결과</div>
+          <div class="result-highlight" id="aiSavingText">$0 / 월 절약 가능</div>
+          <p id="aiRecDesc" style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem;"></p>
+
+          <hr style="border: none; border-top: 1px solid #bfdbfe; margin: 1rem 0;" />
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem;">
+            <span>현재 정액제 월 구독료:</span>
+            <strong id="subCostText">$20.00 (약 ₩27,600)</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem;">
+            <span>동일 사용량 API 예상 비용:</span>
+            <strong id="apiCostText" style="color: #059669;">$0.00</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.05rem; padding-top: 0.45rem; border-top: 1px dashed #93c5fd;">
+            <span><strong>연간 예상 절감 금액:</strong></span>
+            <strong id="annualSaveKrwText" style="color: var(--primary-dark);">₩0</strong>
+          </div>
+        </div>
+
+        <AffiliateCard type="ai" />
+      </div>
+    </div>
+  </div>
+
+  <AdSlot position="middle" />
+
+  <article class="card prose">
+    <h2>ChatGPT Plus · Claude Pro · Gemini 구독 vs API 완벽 비교</h2>
+    <p>
+      많은 직장인과 개발자들이 ChatGPT Plus($20)와 Claude Pro($20)를 동시에 구독하며 매달 5~6만 원 이상의 고정비를 지출하고 있습니다. 하지만 본인의 하루 프롬프트 사용량이 30회 미만이라면 API 연동 UI(예: OpenWebUI, TypingMind, Cursor 등)를 활용하는 것이 훨씬 경제적입니다.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>월 정액 구독 ($20/월)</th>
+          <th>API 종량제 (사용한 만큼 지불)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>유리한 사용자</strong></td>
+          <td>하루 50회 이상 대용량 파일 분석·캔버스·음성 모드를 헤비하게 쓰는 사용자</td>
+          <td>하루 10~30회 질문하거나 여러 AI 모델(GPT, Claude, Gemini)을 번갈아 쓰는 사용자</td>
+        </tr>
+        <tr>
+          <td><strong>평균 월 지출</strong></td>
+          <td>고정 $20 ~ $40 (약 2.8만 ~ 5.5만 원)</td>
+          <td>평균 $1.5 ~ $6.0 (약 2,000원 ~ 8,500원)</td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+
+  <AdSlot position="bottom" />
+
+  <script is:inline>
+    function calcAiCost() {
+      const dailyPrompts = parseFloat(document.getElementById('dailyPrompts').value) || 25;
+      const tier = document.getElementById('modelTier').value;
+      const subCount = parseInt(document.getElementById('subCount').value, 10) || 1;
+
+      const subCostUsd = subCount * 20;
+
+      // 1회 질문+답변 평균 약 2,000 토큰 가정 시 1회당 비용(USD)
+      const costPerPrompt = tier === 'flash' ? 0.0006 : tier === 'standard' ? 0.012 : 0.045;
+      const apiMonthlyUsd = dailyPrompts * 30 * costPerPrompt;
+
+      const diffUsd = subCostUsd - apiMonthlyUsd;
+      const rate = 1380;
+
+      document.getElementById('subCostText').textContent = `$${subCostUsd.toFixed(2)} (약 ₩${Math.round(subCostUsd * rate).toLocaleString('ko-KR')})`;
+      document.getElementById('apiCostText').textContent = `$${apiMonthlyUsd.toFixed(2)} (약 ₩${Math.round(apiMonthlyUsd * rate).toLocaleString('ko-KR')})`;
+
+      const badge = document.getElementById('aiRecBadge');
+      const saveText = document.getElementById('aiSavingText');
+      const desc = document.getElementById('aiRecDesc');
+      const annualKrw = document.getElementById('annualSaveKrwText');
+
+      if (diffUsd > 0) {
+        badge.textContent = '💡 API 전환 시 비용 절감 가능!';
+        badge.style.color = '#059669';
+        saveText.textContent = `월 $${diffUsd.toFixed(1)} 절약`;
+        desc.textContent = `현재 사용량 기준 정액 구독보다 API 종량제가 훨씬 유리합니다.`;
+        annualKrw.textContent = `연 약 ₩${Math.round(diffUsd * 12 * rate).toLocaleString('ko-KR')} 절약`;
+      } else {
+        badge.textContent = '✅ 월 정액제($20) 유지 추천!';
+        badge.style.color = '#2563eb';
+        saveText.textContent = `정액제가 월 $${Math.abs(diffUsd).toFixed(1)} 이득`;
+        desc.textContent = `사용량이 많아 API보다 월 정액 무제한 구독을 유지하는 것이 훨씬 경제적입니다.`;
+        annualKrw.textContent = `정액제 유지 시 연 ₩${Math.round(Math.abs(diffUsd) * 12 * rate).toLocaleString('ko-KR')} 이득`;
+      }
+    }
+
+    document.getElementById('calcAiBtn').addEventListener('click', calcAiCost);
+    ['dailyPrompts', 'modelTier', 'subCount'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', calcAiCost);
+    });
+    calcAiCost();
+  </script>
+</BaseLayout>

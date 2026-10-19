@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site';
+---
+
+<BaseLayout title="문의하기 (Contact Us)">
+  <article class="card prose">
+    <h1>문의하기 (Contact Us)</h1>
+    <p>
+      계산기 오류 제보, 신규 계산 도구 추가 요청, 콘텐츠 정정 및 광고·제휴 문의는 아래 이메일로 연락해 주시면 신속히 답변드리겠습니다.
+    </p>
+    <ul>
+      <li><strong>공식 이메일:</strong> <a href={`mailto:${SITE_CONFIG.contactEmail}`}>{SITE_CONFIG.contactEmail}</a></li>
+      <li><strong>응답 시간:</strong> 영업일 기준 24~48시간 이내</li>
+    </ul>
+  </article>
+</BaseLayout>

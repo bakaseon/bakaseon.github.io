@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://smart-calc-hub.pages.dev/sitemap.xml

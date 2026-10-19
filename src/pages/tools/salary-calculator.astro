@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AffiliateCard from '../../components/AffiliateCard.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "2026 연봉 실수령액 및 월급 세후 계산기",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "description": "4대 보험(국민연금, 건강보험, 장기요양, 고용보험)과 근로소득세, 비과세 식대를 반영한 2026년 최신 월 실수령액 계산기입니다."
+};
+---
+
+<BaseLayout
+  title="2026 연봉 실수령액 계산기 (4대보험·비과세 식대 반영 세후 월급)"
+  description="내 연봉의 실제 통장 입금액은 얼마일까요? 2026년 최신 4대 보험 요율과 비과세 식대(월 20만원)를 반영하여 정확한 월 실수령액을 계산해 보세요."
+  jsonLd={jsonLd}
+>
+  <AdSlot position="top" />
+
+  <div class="card">
+    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">💰 2026 연봉 실수령액 자동 계산기</h1>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+      계약 연봉과 비과세 식대, 부양가족 수를 입력하면 4대 보험 및 소득세 공제 후 실제 통장에 찍히는 월 실수령액을 즉시 계산합니다.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <div class="form-group">
+          <label for="annualSalary">1. 계약 연봉 (만원 단위)</label>
+          <input type="number" id="annualSalary" class="form-control" value="5000" min="2000" step="100" />
+        </div>
+
+        <div class="form-group">
+          <label for="nonTaxable">2. 월 비과세액 (식대 등, 기본 20만원)</label>
+          <input type="number" id="nonTaxable" class="form-control" value="20" min="0" step="5" />
+        </div>
+
+        <div class="form-group">
+          <label for="dependents">3. 부양가족 수 (본인 포함)</label>
+          <select id="dependents" class="form-control">
+            <option value="1">1명 (본인만)</option>
+            <option value="2">2명</option>
+            <option value="3">3명</option>
+            <option value="4">4명 이상</option>
+          </select>
+        </div>
+
+        <button id="calcSalaryBtn" class="btn-primary" type="button">세후 월 실수령액 계산하기</button>
+      </div>
+
+      <div>
+        <div class="result-box">
+          <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">예상 월 실수령액 (세후)</div>
+          <div class="result-highlight" id="netMonthlyText">₩0</div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+            세전 월급 <strong id="grossMonthlyText">₩0</strong>에서 총 <strong id="totalDeductionText" style="color:#dc2626;">₩0</strong>이 공제됩니다.
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #bfdbfe; margin: 1rem 0;" />
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.92rem;">
+            <span>국민연금 (4.5%):</span>
+            <strong id="pensionText">₩0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.92rem;">
+            <span>건강보험 + 장기요양:</span>
+            <strong id="healthText">₩0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.92rem;">
+            <span>고용보험 (0.9%):</span>
+            <strong id="employText">₩0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.92rem;">
+            <span>근로소득세 + 지방소득세:</span>
+            <strong id="taxText">₩0</strong>
+          </div>
+        </div>
+
+        <AffiliateCard type="salary" />
+      </div>
+    </div>
+  </div>
+
+  <AdSlot position="middle" />
+
+  <article class="card prose">
+    <h2>연봉별 실수령액 핵심 요약표 (2026년 기준)</h2>
+    <p>
+      연봉 협상이나 이직 시 세전 연봉만 보고 판단하면 실제 가처분 소득에서 큰 차이가 발생할 수 있습니다. 과세표준 구간이 올라갈수록 근로소득세 누진세율이 적용되기 때문입니다.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>세전 연봉</th>
+          <th>세전 월급</th>
+          <th>4대보험 + 세금 공제액(약)</th>
+          <th>예상 월 실수령액</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>3,000만 원</strong></td>
+          <td>250만 원</td>
+          <td>약 26만 원</td>
+          <td><strong>약 224만 원</strong></td>
+        </tr>
+        <tr>
+          <td><strong>4,000만 원</strong></td>
+          <td>333만 원</td>
+          <td>약 40만 원</td>
+          <td><strong>약 293만 원</strong></td>
+        </tr>
+        <tr>
+          <td><strong>5,000만 원</strong></td>
+          <td>416만 원</td>
+          <td>약 58만 원</td>
+          <td><strong>약 358만 원</strong></td>
+        </tr>
+        <tr>
+          <td><strong>6,000만 원</strong></td>
+          <td>500만 원</td>
+          <td>약 78만 원</td>
+          <td><strong>약 422만 원</strong></td>
+        </tr>
+        <tr>
+          <td><strong>8,000만 원</strong></td>
+          <td>666만 원</td>
+          <td>약 124만 원</td>
+          <td><strong>약 542만 원</strong></td>
+        </tr>
+        <tr>
+          <td><strong>1억 원</strong></td>
+          <td>833만 원</td>
+          <td>약 178만 원</td>
+          <td><strong>약 655만 원</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>💡 직장인이 놓치기 쉬운 실수령액 극대화 전략</h3>
+    <ul>
+      <li><strong>비과세 식대 20만 원 한도 확인:</strong> 근로계약서상 식대가 월 20만 원으로 분리되어 있으면 연간 240만 원에 대해 4대 보험과 소득세가 모두 면제되어 월 실수령액이 약 3~5만 원 늘어납니다.</li>
+      <li><strong>연말정산 세액공제용 연금저축/IRP 활용:</strong> 연봉 5,500만 원 이하 직장인은 최대 16.5%(5,500만 원 초과는 13.2%)의 세액공제를 받을 수 있어 13월의 월급을 만들 수 있습니다.</li>
+    </ul>
+  </article>
+
+  <AdSlot position="bottom" />
+
+  <script is:inline>
+    function calcSalary() {
+      const annualMan = parseFloat(document.getElementById('annualSalary').value) || 5000;
+      const nonTaxMan = parseFloat(document.getElementById('nonTaxable').value) || 20;
+      const dep = parseInt(document.getElementById('dependents').value, 10) || 1;
+
+      const grossMonthly = Math.round((annualMan * 10000) / 12);
+      const nonTax = Math.round(nonTaxMan * 10000);
+      const taxableMonthly = Math.max(0, grossMonthly - nonTax);
+
+      // 국민연금 (4.5%, 상한액 반영 근사치)
+      const pensionBase = Math.min(taxableMonthly, 6170000);
+      const pension = Math.round(pensionBase * 0.045);
+
+      // 건강보험 (3.545%) + 장기요양보험 (건보료의 12.95%)
+      const health = Math.round(taxableMonthly * 0.03545);
+      const longTermCare = Math.round(health * 0.1295);
+      const totalHealth = health + longTermCare;
+
+      // 고용보험 (0.9%)
+      const employ = Math.round(taxableMonthly * 0.009);
+
+      // 간이세액표 기반 근로소득세 근사 산출
+      let incomeTax = 0;
+      if (taxableMonthly > 1500000) {
+        const excess = taxableMonthly - 1500000;
+        const rate = taxableMonthly > 5000000 ? 0.11 : taxableMonthly > 3500000 ? 0.075 : 0.04;
+        incomeTax = Math.round(excess * rate * Math.max(0.6, 1 - (dep - 1) * 0.12));
+      }
+      const localTax = Math.round(incomeTax * 0.1);
+      const totalTax = incomeTax + localTax;
+
+      const totalDeduction = pension + totalHealth + employ + totalTax;
+      const netMonthly = grossMonthly - totalDeduction;
+
+      const fmt = (n) => '₩' + n.toLocaleString('ko-KR');
+
+      document.getElementById('grossMonthlyText').textContent = fmt(grossMonthly);
+      document.getElementById('totalDeductionText').textContent = fmt(totalDeduction);
+      document.getElementById('netMonthlyText').textContent = fmt(netMonthly);
+      document.getElementById('pensionText').textContent = fmt(pension);
+      document.getElementById('healthText').textContent = fmt(totalHealth);
+      document.getElementById('employText').textContent = fmt(employ);
+      document.getElementById('taxText').textContent = fmt(totalTax);
+    }
+
+    document.getElementById('calcSalaryBtn').addEventListener('click', calcSalary);
+    ['annualSalary', 'nonTaxable', 'dependents'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', calcSalary);
+    });
+    calcSalary();
+  </script>
+</BaseLayout>

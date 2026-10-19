@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AffiliateCard from '../../components/AffiliateCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const toolLinks = {
+  customs: {
+    title: '📦 내 직구 물품 관부가세 1초 만에 계산해보기',
+    desc: '구매 금액과 국가만 넣으면 면세 한도 초과 여부와 예상 세금을 즉시 알려드립니다.',
+    href: '/tools/customs-calculator/'
+  },
+  salary: {
+    title: '💰 2026 내 연봉 실수령액 & 공제액 바로 계산하기',
+    desc: '비과세 식대와 부양가족 수를 반영한 정확한 세후 월급을 확인하세요.',
+    href: '/tools/salary-calculator/'
+  },
+  dividend: {
+    title: '📈 내 배당주·ETF 미래 월 배당금 복리 계산하기',
+    desc: '매월 적립식 투자와 배당 재투자 시 달성되는 월 현금흐름을 시뮬레이션합니다.',
+    href: '/tools/dividend-calculator/'
+  },
+  ai: {
+    title: '🤖 내 AI 월 구독료 vs API 비용 손익분기점 계산하기',
+    desc: '월 20달러 정액제와 API 종량제 중 어느 쪽이 연간 수십만 원을 아끼는지 진단하세요.',
+    href: '/tools/ai-cost-calculator/'
+  },
+  severance: {
+    title: '💼 퇴사 전 내 예상 퇴직금 & 평균임금 1초 계산하기',
+    desc: '상여금과 미사용 연차수당(3/12)을 반영한 정확한 퇴직금을 지금 바로 확인하세요.',
+    href: '/tools/severance-calculator/'
+  },
+  loan: {
+    title: '🏦 원리금균등 vs 원금균등 총 대출이자 차이 계산하기',
+    desc: '상환 방식 선택만으로 아낄 수 있는 수백만 원의 대출 이자를 비교해 보세요.',
+    href: '/tools/loan-calculator/'
+  }
+};
+
+const relatedToolKey = post.data.relatedTool || 'salary';
+const relatedTool = toolLinks[relatedToolKey];
+const affiliateKey = (relatedToolKey === 'severance' || relatedToolKey === 'loan') ? 'salary' : relatedToolKey;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.pubDate.toISOString(),
+  ...(post.data.faq && post.data.faq.length > 0 ? {
+    "mainEntity": post.data.faq.map((item) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  } : {})
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  jsonLd={jsonLd}
+>
+  <AdSlot position="top" />
+
+  <article class="card prose">
+    <div style="font-size: 0.85rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">
+      {post.data.category.toUpperCase()} · 발행일: {post.data.pubDate.toISOString().slice(0, 10)}
+    </div>
+    <h1 style="font-size: 1.75rem; line-height: 1.35; margin-bottom: 1rem;">{post.data.title}</h1>
+    <p style="font-size: 1.05rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 1.25rem;">
+      {post.data.description}
+    </p>
+
+    <!-- 블로그 방문자를 웹 계산기로 유도하는 핵심 내부 링크 박스 (체류시간 & 광고 CTR 3배 증폭) -->
+    <div style="background: var(--primary-light); border: 2px solid #93c5fd; border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0;">
+      <div style="font-weight: 800; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 0.35rem;">
+        {relatedTool.title}
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+        {relatedTool.desc}
+      </p>
+      <a href={relatedTool.href} class="btn-primary" style="max-width: 320px;">
+        무료 계산기 바로 실행하기 →
+      </a>
+    </div>
+
+    <Content />
+
+    {post.data.faq && post.data.faq.length > 0 && (
+      <section style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+        <h2>자주 묻는 질문 (FAQ)</h2>
+        {post.data.faq.map((item) => (
+          <div style="margin-bottom: 1.15rem;">
+            <h3 style="font-size: 1.08rem; color: var(--primary-dark);">Q. {item.q}</h3>
+            <p style="margin-top: 0.3rem;">{item.a}</p>
+          </div>
+        ))}
+      </section>
+    )}
+  </article>
+
+  <AffiliateCard type={affiliateKey} />
+
+  <AdSlot position="bottom" />
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site';
+---
+
+<BaseLayout title="사이트 소개 (About Us)">
+  <article class="card prose">
+    <h1>사이트 소개 (About {SITE_CONFIG.shortName})</h1>
+    <p>
+      <strong>{SITE_CONFIG.title}</strong>는 복잡한 세법, 4대 보험 요율, 해외직구 관부가세 규정, 그리고 급변하는 AI·SaaS 구독 비용을 누구나 1초 만에 계산하고 합리적인 의사결정을 내릴 수 있도록 돕는 실용 웹 도구 및 전문 정보 플랫폼입니다.
+    </p>
+    <h2>제공하는 핵심 서비스</h2>
+    <ul>
+      <li><strong>금융·세무 웹 계산기:</strong> 최신 법령 및 요율에 기반한 연봉 실수령액, 배당주 복리 시뮬레이션 제공</li>
+      <li><strong>해외직구 통관 도구:</strong> 국가별 목록통관·일반통관 면세 한도 및 품목별 관부가세 실시간 산출</li>
+      <li><strong>AI & IT 비용 최적화 가이드:</strong> 생성형 AI 구독료와 API 종량제 손익분기점 분석 및 생산성 향상 가이드</li>
+    </ul>
+    <h2>운영 원칙</h2>
+    <p>
+      본 사이트의 모든 계산 알고리즘과 정보성 콘텐츠는 공공 데이터(국세청, 관세청, 4대 사회보험 정보연계센터 등)와 공식 서비스 요금표를 기반으로 정기적으로 업데이트됩니다.
+    </p>
+  </article>
+</BaseLayout>

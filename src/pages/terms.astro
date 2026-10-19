@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site';
+---
+
+<BaseLayout title="이용약관 (Terms of Service)">
+  <article class="card prose">
+    <h1>이용약관 (Terms of Service)</h1>
+    <h2>제1조 (목적)</h2>
+    <p>
+      본 약관은 {SITE_CONFIG.title}가 제공하는 웹 계산기 및 정보 콘텐츠의 이용 조건과 책임 한계를 규정함을 목적으로 합니다.
+    </p>
+    <h2>제2조 (면책 조항)</h2>
+    <p>
+      본 사이트의 모든 계산 결과(관부가세, 연봉 실수령액, 배당 복리 수익, AI 비용 비교 등)와 가이드는 이용자의 편의를 위한 모의 계산 및 참고 자료이며, 개별적인 세무·법률·투자 자문을 대체하지 않습니다. 최종 의사결정 및 세액 산출 시에는 관할 세무서, 관세청 또는 금융기관의 공식 기준을 확인하시기 바랍니다.
+    </p>
+    <h2>제3조 (저작권)</h2>
+    <p>
+      본 사이트에 게시된 웹 도구 코드, 표, 가이드 문서는 저작권법의 보호를 받으며 무단 복제 및 배포를 금합니다.
+    </p>
+  </article>
+</BaseLayout>

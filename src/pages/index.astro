@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const tools = [
+  {
+    badge: '직구 필수',
+    title: '📦 해외직구 관부가세 계산기',
+    desc: '미국 $200 · 중국/일본 $150 면세 한도 판별 및 품목별 관세·부가세 1초 계산',
+    href: '/tools/customs-calculator/',
+    cpcTag: '쇼핑·물류·제휴'
+  },
+  {
+    badge: '인기 1위',
+    title: '💰 2026 연봉 실수령액 계산기',
+    desc: '4대 보험 최신 요율 및 비과세 식대(20만원) 반영 세후 월급 실수령액 계산',
+    href: '/tools/salary-calculator/',
+    cpcTag: '금융·대출·보험'
+  },
+  {
+    badge: '이직·퇴사',
+    title: '💼 2026 퇴직금 & 평균임금 계산기',
+    desc: '재직일수, 최근 3개월 급여, 연간 상여금·연차수당 반영 예상 퇴직금 산출',
+    href: '/tools/severance-calculator/',
+    cpcTag: 'IRP·퇴직연금'
+  },
+  {
+    badge: '초고단가 금융',
+    title: '🏦 대출 원리금 vs 원금균등 계산기',
+    desc: '주택담보·신용대출 상환 방식에 따른 월 납입금 및 총 이자 절감액 1초 비교',
+    href: '/tools/loan-calculator/',
+    cpcTag: '주담대·대환대출'
+  },
+  {
+    badge: '재테크/ETF',
+    title: '📈 배당주 & ETF 복리 시뮬레이터',
+    desc: 'SCHD · JEPI 월배당 재투자 시 연차별 미래 월 배당금 현금흐름 시뮬레이션',
+    href: '/tools/dividend-calculator/',
+    cpcTag: '증권·해외주식'
+  },
+  {
+    badge: 'AI 생산성',
+    title: '🤖 AI 구독료 vs API 가성비 계산기',
+    desc: 'ChatGPT Plus · Claude Pro 월 $20 정액제와 API 종량제 중 이득인 쪽 진단',
+    href: '/tools/ai-cost-calculator/',
+    cpcTag: 'SaaS·클라우드'
+  }
+];
+---
+
+<BaseLayout>
+  <section class="hero-banner">
+    <h1>복잡한 세금·금융·AI 비용, 1초 만에 계산하세요</h1>
+    <p>
+      2026년 최신 세법과 요율이 반영된 실용 웹 계산기 모음과 전문가 수준의 금융·IT 실전 가이드를 무료로 제공합니다.
+    </p>
+  </section>
+
+  <AdSlot position="top" />
+
+  <section style="margin: 2rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2 style="font-size: 1.4rem;">⚡ 바로 쓰는 실용 계산기 (Micro Tools)</h2>
+    </div>
+    <div class="grid-2">
+      {tools.map((tool) => (
+        <a href={tool.href} class="card tool-card" style="text-decoration: none; color: inherit; display: block; transition: transform 0.15s, border-color 0.15s;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span style="background: var(--primary-light); color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px;">
+              {tool.badge}
+            </span>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">{tool.cpcTag}</span>
+          </div>
+          <h3 style="font-size: 1.22rem; margin-bottom: 0.45rem; color: var(--text);">{tool.title}</h3>
+          <p style="font-size: 0.94rem; color: var(--text-muted); margin-bottom: 0.85rem;">{tool.desc}</p>
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">지금 계산해보기 →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <AdSlot position="middle" />
+
+  <section style="margin: 2.5rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2 style="font-size: 1.4rem;">📚 최신 금융 · 직구 · AI 실전 가이드</h2>
+      <a href="/blog/" style="font-weight: 700; font-size: 0.92rem;">전체 글 보기 →</a>
+    </div>
+
+    <div class="grid-2">
+      {posts.map((post) => (
+        <article class="card" style="margin-bottom: 0;">
+          <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-bottom: 0.35rem;">
+            {post.data.category.toUpperCase()} · {post.data.pubDate.toISOString().slice(0, 10)}
+          </div>
+          <h3 style="font-size: 1.18rem; margin-bottom: 0.5rem; line-height: 1.4;">
+            <a href={`/blog/${post.slug}/`} style="color: var(--text);">{post.data.title}</a>
+          </h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem;">
+            {post.data.description}
+          </p>
+          <a href={`/blog/${post.slug}/`} style="font-size: 0.9rem; font-weight: 700;">자세히 읽기 →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <AdSlot position="bottom" />
+</BaseLayout>
