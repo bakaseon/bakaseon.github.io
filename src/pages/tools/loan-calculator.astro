@@ -6,35 +6,35 @@ import AffiliateCard from '../../components/AffiliateCard.astro';
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "대출 이자 계산기 (원리금균등 vs 원금균등 상환 비교)",
+  "name": "2026 대출 이자 & 스트레스 DSR 3단계(가산금리 1.5%) 비교 계산기",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
-  "description": "주택담보대출 및 신용대출 금액, 금리, 기간에 따른 원리금균등상환과 원금균등상환의 총 이자 차이를 비교합니다."
+  "description": "원리금균등 vs 원금균등 상환 이자 비교 및 2026년 전면 시행된 스트레스 DSR 3단계(가산금리 1.50%) 적용 시 월 상환액 변화를 계산합니다."
 };
 ---
 
 <BaseLayout
-  title="대출 이자 비교 계산기 (원리금균등 vs 원금균등 총 이자 차이 1초 비교)"
-  description="주택담보대출·전세대출·신용대출 실행 전 필수! 원리금균등상환과 원금균등상환 중 어느 방식이 총 이자를 수백만 원 아껴주는지 한눈에 비교해 보세요."
+  title="2026 대출 이자 비교 계산기 (원리금 vs 원금균등 · 스트레스 DSR 3단계 1.5% 반영)"
+  description="주택담보대출·신용대출 실행 전 필수! 원리금균등과 원금균등 총 이자 차이는 물론, 2026년 스트레스 DSR 3단계(가산금리 +1.50%) 심사 시 적용되는 월 상환액을 즉시 비교하세요."
   jsonLd={jsonLd}
 >
   <AdSlot position="top" />
 
   <div class="card">
-    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">🏦 대출 원리금균등 vs 원금균등 이자 비교 계산기</h1>
+    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">🏦 2026 대출 이자 & 스트레스 DSR 3단계 비교 계산기</h1>
     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-      대출 원금, 연 이자율, 상환 기간을 입력하면 두 상환 방식의 첫 달 납입금과 총 이자 절감액을 즉시 비교합니다.
+      대출 원금과 금리, 기간을 입력하면 <strong>원리금균등 vs 원금균등 총 이자 절감액</strong>과 <strong>2026 스트레스 DSR 3단계(+1.50% 가산금리)</strong> 심사 기준 월 부채상환액을 동시에 계산합니다.
     </p>
 
     <div class="grid-2">
       <div>
         <div class="form-group">
-          <label for="loanAmount">1. 대출 원금 (만원 단위, 예: 1억 원이면 10000)</label>
-          <input type="number" id="loanAmount" class="form-control" value="10000" min="100" step="500" />
+          <label for="loanAmount">1. 대출 원금 (만원 단위, 예: 3억 원이면 30000)</label>
+          <input type="number" id="loanAmount" class="form-control" value="30000" min="100" step="1000" />
         </div>
 
         <div class="form-group">
-          <label for="loanRate">2. 연 이자율 (%)</label>
+          <label for="loanRate">2. 실제 대출 연 이자율 (%)</label>
           <input type="number" id="loanRate" class="form-control" value="4.2" min="0.5" max="20" step="0.1" />
         </div>
 
@@ -43,14 +43,14 @@ const jsonLd = {
           <select id="loanYears" class="form-control">
             <option value="3">3년 (36개월)</option>
             <option value="5">5년 (60개월)</option>
-            <option value="10" selected>10년 (120개월)</option>
+            <option value="10">10년 (120개월)</option>
             <option value="20">20년 (240개월)</option>
-            <option value="30">30년 (360개월)</option>
+            <option value="30" selected>30년 (360개월)</option>
             <option value="40">40년 (480개월)</option>
           </select>
         </div>
 
-        <button id="calcLoanBtn" class="btn-primary" type="button">상환 방식별 이자 비교하기</button>
+        <button id="calcLoanBtn" class="btn-primary" type="button">상환 방식 & DSR 3단계 비교하기</button>
       </div>
 
       <div>
@@ -58,13 +58,13 @@ const jsonLd = {
           <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">원금균등 선택 시 총 이자 절약액</div>
           <div class="result-highlight" id="interestDiffText">₩0 절약</div>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
-            원금균등상환이 원리금균등상환보다 총 이자 부담이 항상 적습니다.
+            원금균등상환이 원리금균등상환보다 총 이자 부담이 항상 적으며 DSR 한도 산정에도 유리합니다.
           </p>
 
           <hr style="border: none; border-top: 1px solid #bfdbfe; margin: 1rem 0;" />
 
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem;">
-            <span>[원리금균등] 매월 고정 납입금:</span>
+            <span>[원리금균등] 실제 매월 납입금:</span>
             <strong id="equalMonthlyPayText">₩0</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem;">
@@ -75,9 +75,13 @@ const jsonLd = {
             <span>[원금균등] 첫 달 납입금:</span>
             <strong id="principalFirstPayText">₩0</strong>
           </div>
-          <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem;">
             <span><strong>[원금균등] 총 이자 합계:</strong></span>
             <strong id="principalTotalIntText" style="color: #059669;">₩0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding-top: 0.45rem; border-top: 1px dashed #93c5fd; font-size: 0.9rem;">
+            <span>⚠️ <strong>스트레스 DSR 3단계(+1.5%) 심사 월환산액:</strong></span>
+            <strong id="stressDsrMonthlyText" style="color: #dc2626;">₩0</strong>
           </div>
         </div>
 
@@ -89,9 +93,9 @@ const jsonLd = {
   <AdSlot position="middle" />
 
   <article class="card prose">
-    <h2>원리금균등상환 vs 원금균등상환, 나에게 맞는 선택은?</h2>
+    <h2>2026년 스트레스 DSR 3단계 전면 시행과 대출 상환 전략</h2>
     <p>
-      대출을 받을 때 상환 방식 선택만으로도 전체 대출 기간 동안 수백만 원에서 수천만 원의 이자 차이가 발생합니다.
+      2026년 현재 은행권 및 제2금융권의 모든 가계대출(주택담보대출, 신용대출 등)에 <strong>스트레스 DSR 3단계(스트레스 가산금리 1.50% 100% 반영)</strong>가 적용되고 있습니다. 실제 대출 금리가 4.2%라도 은행이 대출 한도(DSR 40%)를 심사할 때는 <strong>+1.50%를 더한 5.7% 금리</strong>를 기준으로 상환 능력을 평가합니다.
     </p>
     <table>
       <thead>
@@ -103,19 +107,19 @@ const jsonLd = {
       </thead>
       <tbody>
         <tr>
-          <td><strong>월 납입금 특징</strong></td>
-          <td>만기까지 매달 똑같은 금액(원금+이자) 납부</td>
-          <td>첫 달이 가장 높고 갈수록 매달 납입금이 줄어듦</td>
+          <td><strong>월 납입금 구조</strong></td>
+          <td>만기까지 매달 동일한 원리금 납부</td>
+          <td>첫 달이 가장 높고 매달 이자가 줄어듦</td>
         </tr>
         <tr>
           <td><strong>총 이자 부담</strong></td>
           <td>상대적으로 많음</td>
-          <td><strong>가장 적음 (원금이 빠르게 줄어들기 때문)</strong></td>
+          <td><strong>가장 적음 (원금이 빠르게 감소)</strong></td>
         </tr>
         <tr>
-          <td><strong>추천 대상</strong></td>
-          <td>매달 일정한 지출 관리가 필요한 직장인</td>
-          <td>초기 상환 여력이 있고 총 이자를 아끼고 싶은 분</td>
+          <td><strong>스트레스 DSR 3단계 한도</strong></td>
+          <td>총 이자 산정액이 커서 한도가 상대적으로 적음</td>
+          <td><strong>총 상환액이 적어 최대 대출 한도 확보에 유리</strong></td>
         </tr>
       </tbody>
     </table>
@@ -125,21 +129,25 @@ const jsonLd = {
 
   <script is:inline>
     function calcLoan() {
-      const principal = (parseFloat(document.getElementById('loanAmount').value) || 10000) * 10000;
+      const principal = (parseFloat(document.getElementById('loanAmount').value) || 30000) * 10000;
       const annualRate = (parseFloat(document.getElementById('loanRate').value) || 4.2) / 100;
-      const years = parseInt(document.getElementById('loanYears').value, 10) || 10;
+      const years = parseInt(document.getElementById('loanYears').value, 10) || 30;
 
       const months = years * 12;
       const r = annualRate / 12;
 
-      // 1. 원리금균등상환
+      // 1. 원리금균등상환 (실제 금리)
       const equalMonthly = (principal * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
       const equalTotalInt = equalMonthly * months - principal;
 
-      // 2. 원금균등상환
+      // 2. 원금균등상환 (실제 금리)
       const monthlyPrincipal = principal / months;
       const firstMonthPay = monthlyPrincipal + principal * r;
       const principalTotalInt = (principal * r * (months + 1)) / 2;
+
+      // 3. 스트레스 DSR 3단계 (+1.50% 가산금리 적용 시 심사 기준 월 상환액)
+      const stressRate = (annualRate + 0.015) / 12;
+      const stressMonthly = (principal * stressRate * Math.pow(1 + stressRate, months)) / (Math.pow(1 + stressRate, months) - 1);
 
       const diff = Math.max(0, equalTotalInt - principalTotalInt);
       const fmt = (n) => '₩' + Math.round(n).toLocaleString('ko-KR');
@@ -149,6 +157,7 @@ const jsonLd = {
       document.getElementById('equalTotalIntText').textContent = fmt(equalTotalInt);
       document.getElementById('principalFirstPayText').textContent = fmt(firstMonthPay);
       document.getElementById('principalTotalIntText').textContent = fmt(principalTotalInt);
+      document.getElementById('stressDsrMonthlyText').textContent = fmt(stressMonthly);
     }
 
     document.getElementById('calcLoanBtn').addEventListener('click', calcLoan);

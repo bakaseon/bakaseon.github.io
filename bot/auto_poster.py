@@ -62,7 +62,7 @@ def generate_with_gemini(topic: dict, api_key: str) -> str:
 3. 독자가 바로 실행할 수 있는 체크리스트와 구체적인 수치 예시를 포함하세요.
 4. 분량은 공백 포함 1,800자 이상으로 깊이 있게 작성하세요.
 """
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={api_key}"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.65}
