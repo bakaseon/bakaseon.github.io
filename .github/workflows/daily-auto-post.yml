@@ -1,35 +1,46 @@
-name: Daily Auto SEO Blog Publisher
+name: Auto Post & Deploy to GitHub Pages
 
 on:
+  push:
+    branches: [ main, master ]
   schedule:
-    # 매일 오전 8시 (한국 시간 KST = UTC+9 -> 23:00 UTC) 자동 실행
+    # 매일 오전 8시 (한국 시간 KST = UTC+9 -> 23:00 UTC) 자동 글 생성 및 배포
     - cron: '0 23 * * *'
-  workflow_dispatch: # GitHub 웹페이지에서 버튼 클릭 한 번으로 즉시 수동 실행도 가능
+  workflow_dispatch: # GitHub 웹에서 버튼 클릭 한 번으로 즉시 실행 가능
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  generate-and-publish:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python (for Scheduled or Manual Auto-Post)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Run Auto Poster Bot
+      - name: Generate Daily SEO Blog Post
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python bot/auto_poster.py
-
-      - name: Commit and Push new post
         run: |
+          python bot/auto_poster.py
           git config user.name "Auto Income Bot"
-          git config user.email "bot@smart-calc-hub.pages.dev"
+          git config user.email "e.jang.soltec21@gmail.com"
           git add src/content/blog/ bot/history.json
           if git diff --staged --quiet; then
             echo "새로 추가된 글이 없습니다."
@@ -37,3 +48,26 @@ jobs:
             git commit -m "chore(blog): auto-publish daily SEO post"
             git push
           fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies & Build Astro site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

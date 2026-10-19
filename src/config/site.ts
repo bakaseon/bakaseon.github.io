@@ -4,11 +4,11 @@
 export const SITE_CONFIG = {
   title: '스마트 머니 & 테크 랩 (Smart Calc Hub)',
   shortName: 'SmartCalcHub',
-  description: '2026년 최신 연봉 실수령액, 해외직구 관부가세, 배당주 복리 계산기 및 AI·IT 실전 가이드를 제공하는 통합 포털입니다.',
-  url: import.meta.env.PUBLIC_SITE_URL || 'https://smart-calc-hub.pages.dev',
+  description: '2026년 최신 연봉 실수령액, 해외직구 관부가세, 퇴직금, 대출이자, 배당주 복리 계산기 및 AI·IT 실전 가이드를 제공하는 통합 포털입니다.',
+  url: import.meta.env.PUBLIC_SITE_URL || 'https://bakaseon.github.io',
   lang: 'ko',
   author: 'Smart Lab Editorial Team',
-  contactEmail: 'contact@smart-calc-hub.pages.dev',
+  contactEmail: 'e.jang.soltec21@gmail.com',
 
   // 1. 검색엔진 소유권 확인 메타태그 (구글 서치콘솔 & 네이버 서치어드바이저 코드만 넣으면 자동 적용)
   verification: {
