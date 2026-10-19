@@ -6,52 +6,62 @@ import AffiliateCard from '../../components/AffiliateCard.astro';
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "AI 구독료 vs API 사용량 가성비 비교 계산기",
+  "name": "2026 AI 구독료 vs API 사용량 가성비 비교 계산기 (GPT-5.6/6 · Claude 5.5 · Gemini 4)",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "All",
-  "description": "ChatGPT Plus, Claude Pro 월 $20 정액 구독과 OpenAI/Anthropic/Gemini API 종량제 비용을 비교합니다."
+  "description": "GPT-6 Astra, GPT-5.6, Claude Sonnet/Opus 5.5, Gemini 4 Argon/3.8 Flash 등 2026 최신 AI 모델의 월 정액 구독료와 API 종량제 비용을 비교합니다."
 };
 ---
 
 <BaseLayout
-  title="AI 구독료 vs API 비용 비교 계산기 (ChatGPT·Claude·Gemini 가성비 진단)"
-  description="매달 20달러씩 나가는 ChatGPT Plus, Claude Pro 구독료가 아깝다면? 내 하루 질문 횟수를 입력해 정액 구독과 API 종량제 중 어느 쪽이 이득인지 비교해 보세요."
+  title="2026 AI 구독료 vs API 비용 비교 계산기 (GPT-5.6/6 · Claude 5.5 · Gemini 4)"
+  description="ChatGPT Plus/Pro, Claude 5.5, Gemini 최신 정액 구독과 API 종량제(프롬프트 캐싱 반영) 중 어느 쪽이 유리한지 2026년 최신 토큰 단가로 즉시 비교해 보세요."
   jsonLd={jsonLd}
 >
   <AdSlot position="top" />
 
   <div class="card">
-    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">🤖 AI 월 구독료 vs API 종량제 가성비 계산기</h1>
+    <h1 style="font-size: 1.65rem; margin-bottom: 0.5rem;">🤖 2026 AI 월 구독료 vs API 종량제 가성비 계산기</h1>
     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-      하루 평균 AI 질문 횟수와 답변 길이를 입력하면 월 $20 정액제 구독과 API 호출 방식 중 어느 쪽이 얼마나 절약되는지 즉시 계산합니다.
+      2026년 최신 플래그십 모델(GPT-5.6/6, Claude 5.5, Gemini 4/3.8)의 실제 토큰 단가와 프롬프트 캐싱 할인율을 반영하여 정액 구독 대비 절감액을 계산합니다.
     </p>
 
     <div class="grid-2">
       <div>
         <div class="form-group">
           <label for="dailyPrompts">1. 하루 평균 질문(프롬프트) 횟수</label>
-          <input type="number" id="dailyPrompts" class="form-control" value="25" min="1" max="500" step="5" />
+          <input type="number" id="dailyPrompts" class="form-control" value="25" min="1" max="1000" step="5" />
         </div>
 
         <div class="form-group">
-          <label for="modelTier">2. 주로 사용하는 AI 모델 등급</label>
+          <label for="modelTier">2. 주로 사용하는 AI 모델 등급 (2026 최신 기준)</label>
           <select id="modelTier" class="form-control">
-            <option value="flash">경량·고속 모델 (Gemini Flash / GPT-4o mini)</option>
-            <option value="standard" selected>표준 플래그십 (GPT-4o / Claude 3.5 Sonnet / Gemini Pro)</option>
-            <option value="heavy">초고성능 추론 모델 (OpenAI o1 / Claude Opus)</option>
+            <option value="flash">경량·초고속 (Gemini 3.8 Flash / Claude Haiku 5.5 / GPT-5.6 Luna)</option>
+            <option value="standard" selected>표준 플래그십 (GPT-5.6 Terra / Claude Sonnet 5.5 / Gemini 4 Argon)</option>
+            <option value="reasoning">고성능 추론·코딩 (GPT-5.6 Sol / Claude Opus 5.5)</option>
+            <option value="frontier">초고성능 프론티어·에이전트 (GPT-6 Astra / Claude Fable 5.1)</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="subCount">3. 현재 유료 구독 중인 AI 서비스 개수 ($20/월 기준)</label>
-          <select id="subCount" class="form-control">
-            <option value="1">1개 구독 중 ($20/월)</option>
-            <option value="2">2개 구독 중 ($40/월 - 예: ChatGPT + Claude)</option>
-            <option value="3">3개 이상 구독 중 ($60/월)</option>
+          <label for="subPlan">3. 비교할 현재 유료 구독 요금제 (월간)</label>
+          <select id="subPlan" class="form-control">
+            <option value="20" selected>기본 유료 구독 1개 ($20/월 - Plus / Pro 단일 구독)</option>
+            <option value="40">기본 유료 구독 2개 ($40/월 - 예: ChatGPT + Claude 동시 구독)</option>
+            <option value="60">기본 유료 구독 3개 ($60/월 - GPT + Claude + Gemini/Cursor)</option>
+            <option value="200">헤비 유저 요금제 ($200/월 - Pro / Max 무제한급 티어)</option>
           </select>
         </div>
 
-        <button id="calcAiBtn" class="btn-primary" type="button">AI 비용 절감액 계산하기</button>
+        <div class="form-group">
+          <label for="useCaching">4. API 프롬프트 캐싱(Prompt Caching) 활용 여부</label>
+          <select id="useCaching" class="form-control">
+            <option value="yes" selected>적용 (반복 문서·코드 분석 시 입력 토큰 최대 90% 할인)</option>
+            <option value="no">미적용 (매번 완전히 새로운 짧은 질문만 수행)</option>
+          </select>
+        </div>
+
+        <button id="calcAiBtn" class="btn-primary" type="button">2026 최신 단가로 절감액 계산하기</button>
       </div>
 
       <div>
@@ -70,8 +80,12 @@ const jsonLd = {
             <span>동일 사용량 API 예상 비용:</span>
             <strong id="apiCostText" style="color: #059669;">$0.00</strong>
           </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.45rem; font-size: 0.88rem; color: var(--text-muted);">
+            <span>1회 질문당 평균 API 단가:</span>
+            <span id="perPromptCostText">$0.000</span>
+          </div>
           <div style="display: flex; justify-content: space-between; font-size: 1.05rem; padding-top: 0.45rem; border-top: 1px dashed #93c5fd;">
-            <span><strong>연간 예상 절감 금액:</strong></span>
+            <span><strong>연간 예상 차액 (원화):</strong></span>
             <strong id="annualSaveKrwText" style="color: var(--primary-dark);">₩0</strong>
           </div>
         </div>
@@ -84,31 +98,51 @@ const jsonLd = {
   <AdSlot position="middle" />
 
   <article class="card prose">
-    <h2>ChatGPT Plus · Claude Pro · Gemini 구독 vs API 완벽 비교</h2>
+    <h2>2026년 최신 AI 모델 등급별 API 토큰 가격표 (100만 토큰 기준)</h2>
     <p>
-      많은 직장인과 개발자들이 ChatGPT Plus($20)와 Claude Pro($20)를 동시에 구독하며 매달 5~6만 원 이상의 고정비를 지출하고 있습니다. 하지만 본인의 하루 프롬프트 사용량이 30회 미만이라면 API 연동 UI(예: OpenWebUI, TypingMind, Cursor 등)를 활용하는 것이 훨씬 경제적입니다.
+      2026년 현재 생성형 AI 시장은 <strong>표준 플래그십(입력 100만 토큰당 $2.00)</strong> 구간에서 가장 치열한 가성비 경쟁이 벌어지고 있으며, 에이전틱(Agentic) 추론 모델은 상위 티어로 세분화되어 있습니다.
     </p>
     <table>
       <thead>
         <tr>
-          <th>구분</th>
-          <th>월 정액 구독 ($20/월)</th>
-          <th>API 종량제 (사용한 만큼 지불)</th>
+          <th>모델 등급</th>
+          <th>대표 최신 모델 (2026)</th>
+          <th>입력 단가 (1M 토큰)</th>
+          <th>출력 단가 (1M 토큰)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>유리한 사용자</strong></td>
-          <td>하루 50회 이상 대용량 파일 분석·캔버스·음성 모드를 헤비하게 쓰는 사용자</td>
-          <td>하루 10~30회 질문하거나 여러 AI 모델(GPT, Claude, Gemini)을 번갈아 쓰는 사용자</td>
+          <td><strong>경량 · 고속 (Flash/Haiku)</strong></td>
+          <td>Gemini 3.8 Flash · Claude Haiku 5.5 · GPT-5.6 Luna</td>
+          <td>$0.10 ~ $0.75</td>
+          <td>$0.50 ~ $3.75</td>
         </tr>
         <tr>
-          <td><strong>평균 월 지출</strong></td>
-          <td>고정 $20 ~ $40 (약 2.8만 ~ 5.5만 원)</td>
-          <td>평균 $1.5 ~ $6.0 (약 2,000원 ~ 8,500원)</td>
+          <td><strong>표준 플래그십 (Standard)</strong></td>
+          <td><strong>GPT-5.6 Terra · Claude Sonnet 5.5 · Gemini 4 Argon</strong></td>
+          <td><strong>$2.00 내외</strong></td>
+          <td><strong>$10.00 ~ $12.00</strong></td>
+        </tr>
+        <tr>
+          <td><strong>고성능 추론 (Reasoning)</strong></td>
+          <td>GPT-5.6 Sol · Claude Opus 5.5</td>
+          <td>$4.00 ~ $5.00</td>
+          <td>$20.00 ~ $30.00</td>
+        </tr>
+        <tr>
+          <td><strong>프론티어 · 에이전틱</strong></td>
+          <td>GPT-6 Astra · Claude Fable 5.1 (Mythos 5.1)</td>
+          <td>$10.00</td>
+          <td>$50.00</td>
         </tr>
       </tbody>
     </table>
+
+    <h3>💡 프롬프트 캐싱(Prompt Caching)으로 비용 90% 아끼는 법</h3>
+    <p>
+      Anthropic(Claude 5.5 시리즈)과 OpenAI(GPT-5.6/6), Google(Gemini 4/3.8) 모두 반복되는 시스템 프롬프트나 긴 코드베이스·문서 입력에 대해 최대 90% 할인된 <strong>캐시 읽기 단가(예: Sonnet 5.5 기준 $0.10/1M)</strong>를 제공합니다. 따라서 API 기반 워크스페이스를 사용하면 정액제 여러 개를 구독하는 것보다 훨씬 저렴하게 모든 최신 플래그십 모델을 동시에 사용할 수 있습니다.
+    </p>
   </article>
 
   <AdSlot position="bottom" />
@@ -117,12 +151,26 @@ const jsonLd = {
     function calcAiCost() {
       const dailyPrompts = parseFloat(document.getElementById('dailyPrompts').value) || 25;
       const tier = document.getElementById('modelTier').value;
-      const subCount = parseInt(document.getElementById('subCount').value, 10) || 1;
+      const subCostUsd = parseFloat(document.getElementById('subPlan').value) || 20;
+      const useCaching = document.getElementById('useCaching').value === 'yes';
 
-      const subCostUsd = subCount * 20;
+      // 1회 평균 질문(Input 2,000 토큰 + Output 800 토큰 기준) 2026 최신 단가 산출
+      // Flash: In $0.35/1M, Out $1.80/1M
+      // Standard (Sonnet 5.5 / GPT-5.6 Terra / Gemini 4 Argon): In $2.00/1M, Out $10.00/1M
+      // Reasoning (Opus 5.5 / GPT-5.6 Sol): In $4.50/1M, Out $25.00/1M
+      // Frontier (GPT-6 Astra / Claude Fable 5.1): In $10.00/1M, Out $50.00/1M
+      const pricing = {
+        flash: { inRate: 0.35, outRate: 1.8 },
+        standard: { inRate: 2.0, outRate: 10.0 },
+        reasoning: { inRate: 4.5, outRate: 25.0 },
+        frontier: { inRate: 10.0, outRate: 50.0 }
+      };
 
-      // 1회 질문+답변 평균 약 2,000 토큰 가정 시 1회당 비용(USD)
-      const costPerPrompt = tier === 'flash' ? 0.0006 : tier === 'standard' ? 0.012 : 0.045;
+      const selected = pricing[tier] || pricing.standard;
+      const effectiveInRate = useCaching ? selected.inRate * 0.45 : selected.inRate;
+
+      // 1회 질문당 비용 (Input 2,000 tokens = 0.002M, Output 800 tokens = 0.0008M)
+      const costPerPrompt = (0.002 * effectiveInRate) + (0.0008 * selected.outRate);
       const apiMonthlyUsd = dailyPrompts * 30 * costPerPrompt;
 
       const diffUsd = subCostUsd - apiMonthlyUsd;
@@ -130,6 +178,7 @@ const jsonLd = {
 
       document.getElementById('subCostText').textContent = `$${subCostUsd.toFixed(2)} (약 ₩${Math.round(subCostUsd * rate).toLocaleString('ko-KR')})`;
       document.getElementById('apiCostText').textContent = `$${apiMonthlyUsd.toFixed(2)} (약 ₩${Math.round(apiMonthlyUsd * rate).toLocaleString('ko-KR')})`;
+      document.getElementById('perPromptCostText').textContent = `약 $${costPerPrompt.toFixed(4)} / 회`;
 
       const badge = document.getElementById('aiRecBadge');
       const saveText = document.getElementById('aiSavingText');
@@ -137,22 +186,22 @@ const jsonLd = {
       const annualKrw = document.getElementById('annualSaveKrwText');
 
       if (diffUsd > 0) {
-        badge.textContent = '💡 API 전환 시 비용 절감 가능!';
+        badge.textContent = '💡 API 종량제 전환 시 비용 절감 가능!';
         badge.style.color = '#059669';
         saveText.textContent = `월 $${diffUsd.toFixed(1)} 절약`;
-        desc.textContent = `현재 사용량 기준 정액 구독보다 API 종량제가 훨씬 유리합니다.`;
+        desc.textContent = `현재 사용량에서는 정액 구독보다 API(프롬프트 캐싱 활용)가 훨씬 경제적입니다.`;
         annualKrw.textContent = `연 약 ₩${Math.round(diffUsd * 12 * rate).toLocaleString('ko-KR')} 절약`;
       } else {
-        badge.textContent = '✅ 월 정액제($20) 유지 추천!';
+        badge.textContent = '✅ 월 정액제 구독 유지 추천!';
         badge.style.color = '#2563eb';
         saveText.textContent = `정액제가 월 $${Math.abs(diffUsd).toFixed(1)} 이득`;
-        desc.textContent = `사용량이 많아 API보다 월 정액 무제한 구독을 유지하는 것이 훨씬 경제적입니다.`;
+        desc.textContent = `고성능 모델 사용량이 많아 API 종량제보다 월 정액 구독을 유지하는 것이 유리합니다.`;
         annualKrw.textContent = `정액제 유지 시 연 ₩${Math.round(Math.abs(diffUsd) * 12 * rate).toLocaleString('ko-KR')} 이득`;
       }
     }
 
     document.getElementById('calcAiBtn').addEventListener('click', calcAiCost);
-    ['dailyPrompts', 'modelTier', 'subCount'].forEach((id) => {
+    ['dailyPrompts', 'modelTier', 'subPlan', 'useCaching'].forEach((id) => {
       document.getElementById(id).addEventListener('input', calcAiCost);
     });
     calcAiCost();
